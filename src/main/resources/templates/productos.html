@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Sistema Web Inventario</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" aria-current="page" href="/productos">Inventario</a>
+                </li>
+                <li th:if="${idrol == 1}" class="nav-item">
+                    <a class="nav-link text-dark" aria-current="page" href="/historico">Historico</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" class="btn btn-primary" value="Salir" />
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <a th:if="${idrol != 2}" href="/productos/nuevo" class="btn btn-success mb-3">Agregar Producto</a>
+    <a th:if="${idrol != 1}" href="/productos/salida" class="btn btn-primary mb-3">Salida de Productos</a>
+    <h2 class="text-center">Lista de Productos</h2>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Estatus</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="producto : ${productos}">
+            <td th:text="${producto.idproducto}"></td>
+            <td th:text="${producto.nombre}"></td>
+            <td th:text="${producto.cantidad}"></td>
+            <td>
+                <span th:if="${producto.estatus == 1}" class="badge bg-success">Activo</span>
+                <span th:if="${producto.estatus == 0}" class="badge bg-danger">Inactivo</span>
+            </td>
+            <td class="text-center">
+                <div th:if="${idrol != 2}" class="d-flex justify-content-center gap-2">
+<!--                    <a th:href="@{/productos/editar/{idproducto}(idproducto=${producto.idproducto})}" class="btn btn-warning btn-sm">Editar</a>-->
+                    <a th:if="${producto.estatus != 0}" th:href="@{/productos/editar/{idproducto}(idproducto=${producto.idproducto})}" class="btn btn-warning">
+                        Editar
+                    </a>
+                    <form th:if="${producto.estatus == 1}" th:action="@{/productos/dar_baja/{idproducto}(idproducto=${producto.idproducto})}" method="post">
+                        <button type="submit" class="btn btn-danger">Dar de baja</button>
+                    </form>
+
+                    <form th:if="${producto.estatus == 0}" th:action="@{/productos/activar/{idproducto}(idproducto=${producto.idproducto})}" method="post">
+                        <button type="submit" class="btn btn-success">Activar</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
