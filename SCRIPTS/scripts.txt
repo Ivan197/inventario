@@ -1,0 +1,40 @@
+CREATE TABLE `inventario`.`usuarios`
+(
+	`idUsuario` INT(6) NOT NULL AUTO_INCREMENT ,
+	`nombre` VARCHAR(100) NOT NULL ,
+	`correo` VARCHAR(50) NOT NULL ,
+	`contrasena` VARCHAR(25) NOT NULL ,
+	`idRol` INT(2) NOT NULL ,
+	`estatus` INT(1) NOT NULL ,
+	PRIMARY KEY (`idUsuario`),
+	INDEX `idRol` (`idRol`)
+) ;
+
+CREATE TABLE `inventario`.`roles`
+(
+	`idRol` INT(2) NOT NULL AUTO_INCREMENT ,
+	`nombre` VARCHAR(20) NOT NULL ,
+	`estatus` INT(1) NOT NULL ,
+	PRIMARY KEY (`idRol`)
+);
+
+CREATE TABLE `inventario`.`productos`
+(
+	`idProducto` INT(6) NOT NULL AUTO_INCREMENT ,
+	`nombre` VARCHAR(100) NOT NULL ,
+	`cantidad` INT(5) NOT NULL ,
+	`estatus` INT(1) NOT NULL ,
+	PRIMARY KEY (`idProducto`)
+);
+
+CREATE TABLE `inventario`.`historico`
+(
+	`id` INT(6) NOT NULL AUTO_INCREMENT ,
+	`idProducto` INT(6) NOT NULL ,
+	`movimiento` VARCHAR(10) NOT NULL ,
+	`idUsuario` INT(6) NOT NULL ,
+	`fecha` DATETIME NOT NULL ,
+	PRIMARY KEY (`id`),
+	INDEX `idProducto` (`idProducto`),
+	INDEX `idUsuario` (`idUsuario`)
+);
